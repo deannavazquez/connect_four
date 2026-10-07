@@ -63,7 +63,6 @@ class Game # rubocop:disable Style/Documentation
 
       if valid_move?(col)
         add_piece(col)
-        print_board
         switch_turn
         break # exit loop after successful move
       else
@@ -112,8 +111,9 @@ class Game # rubocop:disable Style/Documentation
 
   def play
     loop do
+      print_board
       player_turn
-      if winner == winner?
+      if winner?
         print_board
         puts "Player #{winner} wins!"
         break
