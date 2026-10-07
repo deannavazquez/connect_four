@@ -115,7 +115,7 @@ describe Game do
       end
     end
 
-    context 'when the column is past the last column' do
+    context 'when the column is past column 6' do
       subject(:game) { described_class.new }
 
       it 'returns false' do
@@ -176,6 +176,24 @@ describe Game do
         game.player_turn
 
         expect(game.board[5][3]).to eq(Game::RED)
+      end
+    end
+
+    context 'when a letter or symbol is inputted' do
+      subject(:game) { described_class.new }
+
+      before do
+        allow(game).to receive(:gets).and_return('a', '3')
+      end
+
+      it 'returns Game::RED in column 3' do
+        game.player_turn
+        expect(game.board[5][3]).to eq(Game::RED)
+      end
+
+      it 'column 0 stays empty' do
+        game.player_turn
+        expect(game.board[5][0]).to eq(' ')
       end
     end
   end

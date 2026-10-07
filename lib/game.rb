@@ -61,7 +61,7 @@ class Game # rubocop:disable Style/Documentation
       input = gets.chomp
       col = input.to_i
 
-      if valid_move?(col)
+      if input.match?(/\A[0-6]\z/) && valid_move?(col)
         add_piece(col)
         switch_turn
         break # exit loop after successful move
@@ -72,12 +72,14 @@ class Game # rubocop:disable Style/Documentation
   end
 
   def winner?
+    # checks rows
     @board.each do |row|
       row.each_cons(4) do |group|
         first = group.first
         return first if group.uniq.size == 1 && group.first != ' '
       end
 
+      # checks columns
       (0..6).each do |col|
         column = @board.map { |row| row[col] }
         column.each_cons(4) do |group|
@@ -86,6 +88,7 @@ class Game # rubocop:disable Style/Documentation
         end
       end
 
+      # checks diagonal down and right
       (0..2).each do |r|
         (0..3).each do |c|
           group = [@board[r][c], @board[r + 1][c + 1], @board[r + 2][c + 2], @board[r + 3][c + 3]]
@@ -94,6 +97,7 @@ class Game # rubocop:disable Style/Documentation
         end
       end
 
+      # checks diagonal up and right
       (3..5).each do |r|
         (0..3).each do |c|
           group = [@board[r][c], @board[r - 1][c + 1], @board[r - 2][c + 2], @board[r - 3][c + 3]]
@@ -113,7 +117,7 @@ class Game # rubocop:disable Style/Documentation
     loop do
       print_board
       player_turn
-      if winner?
+      if (winner = winner?)
         print_board
         puts "Player #{winner} wins!"
         break
