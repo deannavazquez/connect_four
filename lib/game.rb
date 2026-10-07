@@ -112,9 +112,8 @@ class Game # rubocop:disable Style/Documentation
 
   def play
     loop do
-      print_board
       player_turn
-      if winner = winner?
+      if winner == winner?
         print_board
         puts "Player #{winner} wins!"
         break
